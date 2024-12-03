@@ -28,6 +28,9 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // staffロールを付与
+        $user->assignRole('staff');
+
         // 登録後に自動でログインさせる
         Auth::login($user);
 

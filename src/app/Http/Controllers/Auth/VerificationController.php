@@ -15,7 +15,7 @@ class VerificationController extends Controller
         // メールアドレスの認証を完了する
         $request->fulfill();
 
-        return redirect()->route(''); // 認証後のリダイレクト先
+        return redirect()->route('attendance.show'); // 認証後のリダイレクト先
     }
 
     // メールアドレス認証確認画面の表示
@@ -30,12 +30,5 @@ class VerificationController extends Controller
         auth()->user()->sendEmailVerificationNotification();
 
         return back()->with('status', '認証メールを再送しました！');
-    }
-
-    // メール認証せずに一覧画面に遷移する場合
-    public function guestView()
-    {
-        Auth::logout();
-        return redirect()->route('item.list');
     }
 }
