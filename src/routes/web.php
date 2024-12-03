@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\AttendanceController;
 
 
 /*
@@ -27,7 +28,6 @@ Route::get('/email/verify', [VerificationController::class, 'show'])
 // 認証メール再送信
 Route::post('/email/verification-notification', [VerificationController::class, 'send'])
     ->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-Route::post('/guest-view', [VerificationController::class, 'guestView'])->name('guest.view');
 
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register.view');
 Route::post('register', [RegisterController::class, 'register'])->name('register');
@@ -35,3 +35,8 @@ Route::post('register', [RegisterController::class, 'register'])->name('register
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
+
+Route::middleware(['role:staff'])->group(function () {
+    Route::get('/attendance', [AttendanceController::class, 'showForm'])->name('attendance.show');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+});

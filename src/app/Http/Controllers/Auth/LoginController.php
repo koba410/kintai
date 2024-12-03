@@ -33,7 +33,7 @@ class LoginController extends Controller
                 return back()->with('status', 'メール認証が必要です。');
             }
 
-            return redirect()->intended('/');
+            return redirect()->route('attendance.show');
         }
 
         // 認証失敗時の処理

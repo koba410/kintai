@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>フリマアプリ</title>
+    <title>勤怠管理</title>
 
     {{-- Bootstrap CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
                                 </a>
                             </li>
                             <li class="nav-item me-3">
-                                <a class="nav-link" href="{{-- {{ route('logout') }} --}}">ログアウト</a>
+                                <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
                             </li>
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{-- {{ route('mypage', ['tab' => 'sell']) }} --}}">マイページ</a>
@@ -56,7 +56,7 @@
                         <!-- デスクトップ用ナビゲーションリンク -->
                         <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
                             <li class="nav-item me-3">
-                                <a class="nav-link" href="{{-- {{ route('logout') }} --}}">ログアウト</a>
+                                <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
                             </li>
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{-- {{ route('mypage', ['tab' => 'sell']) }} --}}">マイページ</a>
