@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6" style="max-width: 680px">
-                <h2 class="text-center mt-5 mb-4">ログイン</h2>
-                <form method="POST" action="{{ route('login') }}">
+                <h2 class="text-center mt-5 mb-4">管理者ログイン</h2>
+                <form method="POST" action="{{ route('admin.login') }}">
                     @csrf
 
                     <!-- メールアドレス -->
@@ -41,11 +41,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <!-- 会員登録リンク -->
-                    <div class="text-center mb-5">
-                        <a href="{{ route('register.view') }}" class="text-primary">会員登録はこちら</a>
-                    </div>
                 </form>
                 
             </div>
