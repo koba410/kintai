@@ -159,7 +159,7 @@ class AttendanceController extends Controller
 
         // 修正申請を作成
         $correction = $attendance->corrections()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $attendance->user_id,
             'attendance_id' => $attendance->id,
             'corrected_date' => $request->input('date'),
             'corrected_check_in' => $request->input('date') . ' ' . $request->input('check_in') . ':00', // 時刻に日付を付与

@@ -46,9 +46,11 @@ Route::middleware(['role:staff'])->middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'showForm'])->name('attendance.show');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('requests.index');
+});
+Route::middleware(['role:staff,role:admin'])->middleware('auth')->group(function () {
     Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail'])->name('attendance.detail');
     Route::post('/attendance/{id}', [AttendanceController::class, 'correction'])->name('attendance.correction');
-    Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('requests.index');
 });
 
 // 管理者
