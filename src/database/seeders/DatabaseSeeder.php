@@ -26,12 +26,22 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole($adminRole); // 管理者ロールを付与
 
         // スタッフアカウントの作成
-        $staffs = User::factory(4)->create();
+        $staff1 = User::factory()->create([
+            'name' => 'staff1',
+            'email' => 'staff@example.com',
+            'password' => bcrypt('password'),
+        ]);
+        $staff1->assignRole($staffRole); // 管理者ロールを付与
+        $this->createAttendanceData($staff1);
+
+        $staffs = User::factory(3)->create();
 
         foreach ($staffs as $staff) {
             $staff->assignRole($staffRole); // スタッフロールを付与
             $this->createAttendanceData($staff); // 勤怠データ作成
         }
+
+
     }
 
     private function createAttendanceData($staff)

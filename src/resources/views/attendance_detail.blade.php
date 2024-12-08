@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="container">
-        <h1 class="text-center mt-3">勤怠詳細</h1>
+        <h2 class="text-left mt-5">| 勤怠詳細</h1>
 
         <form method="POST" action="{{ route('attendance.detail', $attendance->id) }}">
             @csrf
             @method('POST')
 
             <!-- 名前 -->
-            <div class="form-group row mt-3">
+            <div class="form-group row mt-5">
                 <label for="name" class="col-sm-2 col-form-label">名前</label>
                 <div class="col-sm-10">
                     <input type="text" readonly class="form-control-plaintext" id="name" value="{{ $user->name }}">

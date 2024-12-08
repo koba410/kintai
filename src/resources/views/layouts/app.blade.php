@@ -14,6 +14,9 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- jQueryは不要 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -55,13 +58,16 @@
 
                         <!-- デスクトップ用ナビゲーションリンク -->
                         <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
-                            <li class="nav-item">
+                            <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
                             </li>
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
                             </li>
                             <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
                             </li>
                         </ul>

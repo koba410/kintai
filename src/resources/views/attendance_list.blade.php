@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="text-left mt-4">| 勤怠一覧</h1>
+        <h2 class="text-left mt-5">| 勤怠一覧</h1>
 
         <!-- 月情報 -->
         <!-- 前月ボタン -->

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\RequestController;
 
 
 /*
@@ -36,10 +37,11 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 
-Route::middleware(['role:staff'])->group(function () {
+Route::middleware(['role:staff'])->middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'showForm'])->name('attendance.show');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail'])->name('attendance.detail');
     Route::post('/attendance/{id}', [AttendanceController::class, 'correction'])->name('attendance.correction');
+    Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('requests.index');
 });

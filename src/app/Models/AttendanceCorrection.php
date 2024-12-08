@@ -19,6 +19,17 @@ class AttendanceCorrection extends Model
         'approval_status',     // 承認ステータス
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+
+
     public function breakCorrections()
     {
         return $this->hasMany(BreakCorrection::class);
