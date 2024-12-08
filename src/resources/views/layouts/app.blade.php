@@ -36,42 +36,80 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <!-- モバイル用ナビゲーションリンク -->
-                        <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
-                            <!-- 各アイテムに余白を追加 -->
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="#" onclick="toggleDrawer()" style="font-size: 1.5em;">
-                                    <i class="bi bi-search"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="{{-- {{ route('mypage', ['tab' => 'sell']) }} --}}">マイページ</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-outline-light" href="{{-- {{ route('sell') }} --}}">出品</a>
-                            </li>
-                        </ul>
+                    @role('staff')
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <!-- モバイル用ナビゲーションリンク -->
+                            <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
+                                <!-- 各アイテムに余白を追加 -->
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
+                                </li>
+                            </ul>
 
-                        <!-- デスクトップ用ナビゲーションリンク -->
-                        <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
-                            </li>
-                        </ul>
-                    </div>
+                            <!-- デスクトップ用ナビゲーションリンク -->
+                            <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endrole
+
+                    @role('admin')
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <!-- モバイル用ナビゲーションリンク -->
+                            <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
+                                <!-- 各アイテムに余白を追加 -->
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">勤怠一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">スタッフ一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">申請一覧</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
+                                </li>
+                                </li>
+                            </ul>
+
+                            <!-- デスクトップ用ナビゲーションリンク -->
+                            <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">勤怠一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">スタッフ一覧</a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">申請一覧</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endrole
                 @endauth
             </div>
         </nav>

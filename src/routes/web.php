@@ -7,6 +7,10 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RequestController;
 
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\AdminAttendanceController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +23,7 @@ use App\Http\Controllers\RequestController;
 |
 */
 
+// スタッフ
 // メールアドレス認証メールの認証ボタン押下後、反映させるために必要なルート
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->middleware(['auth', 'signed', 'throttle:6,1'])
@@ -44,4 +49,13 @@ Route::middleware(['role:staff'])->middleware('auth')->group(function () {
     Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail'])->name('attendance.detail');
     Route::post('/attendance/{id}', [AttendanceController::class, 'correction'])->name('attendance.correction');
     Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('requests.index');
+});
+
+// 管理者
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.loginForm');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
+Route::get('/admin/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+
+Route::middleware(['role:admin'])->middleware('auth')->group(function () {
+    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.staffAttendance.list');
 });

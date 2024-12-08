@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\LoginRequest;
 
-class LoginController extends Controller
+class AdminAuthController extends Controller
 {
     // ログイン画面の表示
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.admin_login');
     }
 
 
@@ -29,23 +29,22 @@ class LoginController extends Controller
             // メール認証チェック
             if (!$user->hasVerifiedEmail()) {
                 Auth::logout();
-                return redirect()->route('login')->with('status', 'メール認証を完了してください。');
+                return redirect()->route('admin.loginForm')->with('status', 'メール認証を完了してください。');
             }
 
             // ロールチェック
-            if ($user->hasRole('staff')) {
-                return redirect()->route('attendance.show'); // スタッフダッシュボード
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.staffAttendance.list'); // スタッフダッシュボード
             }
 
             // 不正なロール
             Auth::logout();
-            return redirect()->route('login')->with('status', 'スタッフ専用のアカウントでログインしてください。');
+            return redirect()->route('admin.loginForm')->with('status', '管理者専用のアカウントでログインしてください。');
         }
 
         // 認証失敗
-        return redirect()->route('login')->with('status', 'ログイン情報が正しくありません。');
+        return redirect()->route('admin.loginForm')->with('status', 'ログイン情報が正しくありません。');
     }
-
 
     public function destroy(Request $request)
     {
@@ -55,6 +54,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // ログアウト後に/loginにリダイレクト
-        return redirect('/login');
+        return redirect()->route('admin.loginForm');
     }
 }
