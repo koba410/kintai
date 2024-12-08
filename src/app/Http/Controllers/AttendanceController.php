@@ -7,6 +7,8 @@ use App\Models\Attendance;
 use App\Models\BreakRecord;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Requests\CorrectionRequest;
+
 
 class AttendanceController extends Controller
 {
@@ -116,5 +118,67 @@ class AttendanceController extends Controller
 
         // ステータスをビューに渡す
         return redirect()->route('attendance.show')->with('status', $status);
+    }
+
+    public function index(Request $request)
+    {
+        // 現在の月を取得
+        $currentMonth = $request->input('month', Carbon::now()->format('Y-m'));
+
+        // 月の開始日と終了日
+        $startOfMonth = Carbon::parse($currentMonth . '-01')->startOfMonth();
+        $endOfMonth = Carbon::parse($currentMonth . '-01')->endOfMonth();
+
+        // 勤怠データを取得（自分の勤怠データ）
+        $attendances = Attendance::where('user_id', auth()->id())
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->orderBy('date')
+            ->get();
+
+        return view('attendance_list', [
+            'attendances' => $attendances,
+            'currentMonth' => $currentMonth,
+        ]);
+    }
+
+    public function showDetail($id)
+    {
+        $attendance = Attendance::with('breaks', 'corrections')->findOrFail($id);
+        $user = auth()->user();
+
+        // 修正待ちの申請があるか確認
+        $hasPendingCorrection = $attendance->corrections->contains('approval_status', '承認待ち');
+
+
+        return view('attendance_detail', compact('attendance', 'user', 'hasPendingCorrection'));
+    }
+
+    public function correction(CorrectionRequest $request, $id)
+    {
+        $attendance = Attendance::findOrFail($id);
+
+        // 修正申請を作成
+        $correction = $attendance->corrections()->create([
+            'user_id' => auth()->id(),
+            'attendance_id' => $attendance->id,
+            'corrected_date' => $request->input('date'),
+            'corrected_check_in' => $request->input('date') . ' ' . $request->input('check_in') . ':00', // 時刻に日付を付与
+            'corrected_check_out' => $request->input('date') . ' ' . $request->input('check_out') . ':00', // 時刻に日付を付与
+            'reason' => $request->input('note'),
+            'approval_status' => '承認待ち',
+        ]);
+
+        // 休憩修正申請を作成
+        foreach ($request->input('breaks', []) as $break) {
+            $correction->breakCorrections()->create([
+                'break_id' => $break['id'], // 既存の休憩ID
+                'attendance_correction_id' => $correction->id,
+                'corrected_start_time' => $request->input('date') . ' ' . $break['start_time'] . ':00', // 時刻に日付を付与
+                'corrected_end_time' => $request->input('date') . ' ' . $break['end_time'] . ':00', // 時刻に日付を付与
+                'corrected_duration' => Carbon::parse($break['start_time'])->diff($break['end_time'])->format('%H:%I:%S'),
+            ]);
+        }
+
+        return redirect()->route('attendance.detail', $attendance->id)->with('success', '修正申請が送信されました。');
     }
 }
