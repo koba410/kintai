@@ -36,7 +36,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    @role('staff')
+                    @if (auth()->user()->hasRole('staff'))
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <!-- モバイル用ナビゲーションリンク -->
                             <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
@@ -48,7 +48,7 @@
                                     <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
+                                    <a class="nav-link" href="{{ route('request.index') }}">申請</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
@@ -64,16 +64,14 @@
                                     <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('requests.index') }}">申請</a>
+                                    <a class="nav-link" href="{{ route('request.index') }}">申請</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
                                 </li>
                             </ul>
                         </div>
-                    @endrole
-
-                    @role('admin')
+                    @elseif (auth()->user()->hasRole('admin'))
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <!-- モバイル用ナビゲーションリンク -->
                             <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
@@ -82,10 +80,10 @@
                                     <a class="nav-link" href="{{ route('admin.staffAttendance.list') }}">勤怠一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">スタッフ一覧</a>
+                                    <a class="nav-link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">申請一覧</a>
+                                    <a class="nav-link" href="{{ route('admin.requests.index') }}">申請一覧</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
@@ -99,17 +97,17 @@
                                     <a class="nav-link" href="{{ route('admin.staffAttendance.list') }}">勤怠一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">スタッフ一覧</a>
+                                    <a class="nav-link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
                                 </li>
                                 <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{-- {{ route('attendance.show') }} --}}">申請一覧</a>
+                                    <a class="nav-link" href="{{ route('admin.requests.index') }}">申請一覧</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
                                 </li>
                             </ul>
                         </div>
-                    @endrole
+                    @endif
                 @endauth
             </div>
         </nav>

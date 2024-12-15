@@ -2,25 +2,25 @@
 
 @section('content')
     <div class="container">
-        <h2 class="text-left mt-5 mb-5">| 勤怠一覧</h2>
+        <h2 class="text-left mt-5 mb-5">| {{ $user->name }}さんの勤怠</h2>
 
         <!-- 月情報 -->
         <!-- 前月ボタン -->
         <div class="d-flex justify-content-center align-items-center mb-4">
-            <form method="GET" action="{{ route('attendance.index') }}" class="m-0">
+            <form method="GET" action="{{ route('admin.show.staff.attendance', $user->id) }}" class="m-0">
                 <input type="hidden" name="month"
                     value="{{ \Carbon\Carbon::parse($currentMonth)->subMonth()->format('Y-m') }}">
                 <button class="btn btn-secondary">前月</button>
             </form>
             <!-- カレンダー付き月選択 -->
-            <form method="GET" action="{{ route('attendance.index') }}" class="mx-2">
+            <form method="GET" action="{{ route('admin.show.staff.attendance', $user->id) }}" class="mx-2">
                 <div class="d-flex align-items-center">
                     <input type="month" name="month" value="{{ \Carbon\Carbon::parse($currentMonth)->format('Y-m') }}"
                         class="form-control" onchange="this.form.submit()">
                 </div>
             </form>
             <!-- 翌月ボタン -->
-            <form method="GET" action="{{ route('attendance.index') }}" class="m-0">
+            <form method="GET" action="{{ route('admin.show.staff.attendance', $user->id) }}" class="m-0">
                 <input type="hidden" name="month"
                     value="{{ \Carbon\Carbon::parse($currentMonth)->addMonth()->format('Y-m') }}">
                 <button class="btn btn-secondary">翌月</button>
@@ -120,7 +120,7 @@
                         </td>
                         <td>
                             @if ($attendance)
-                                <a href="{{ route('attendance.detail', $attendance->id) }}"
+                                <a href="{{ route('admin.attendance.detail', $attendance->id) }}"
                                     class="btn btn-primary btn-sm">詳細</a>
                             @else
                                 -
@@ -130,5 +130,12 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- CSV出力 -->
+        <div class="d-flex justify-content-end">
+            <form method="GET" action="{{ route('admin.exportCsv', $user->id) }}">
+                <input type="hidden" name="month" value="{{ \Carbon\Carbon::parse($currentMonth)->format('Y-m') }}">
+                <button class="btn btn-dark mt-3 mb-5">CSV出力</button>
+            </form>
+        </div>
     </div>
 @endsection
