@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\AttendanceCorrection;
 use App\Models\BreakRecord;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -143,19 +144,27 @@ class AttendanceController extends Controller
 
     public function showDetail($id)
     {
-        $attendance = Attendance::with('breaks', 'corrections')->findOrFail($id);
-        $user = auth()->user();
 
-        // 修正待ちの申請があるか確認
-        $hasPendingCorrection = $attendance->corrections->contains('approval_status', '承認待ち');
+        // 勤怠データ取得
+        $attendance = Attendance::with(['breaks'])->findOrFail($id);
 
+        // 承認待ちの修正申請データを取得
+        $hasPendingCorrection = AttendanceCorrection::with('breakCorrections')
+            ->where('attendance_id', $id)
+            ->where('approval_status', '承認待ち')
+            ->first();
 
-        return view('attendance_detail', compact('attendance', 'user', 'hasPendingCorrection'));
+        return view('attendance_detail', [
+            'attendance' => $attendance,
+            'hasPendingCorrection' => $hasPendingCorrection,
+        ]);
     }
+
+
 
     public function correction(CorrectionRequest $request, $id)
     {
-        $attendance = Attendance::findOrFail($id);
+        $attendance = Attendance::with(['breaks'])->findOrFail($id);
 
         // 修正申請を作成
         $correction = $attendance->corrections()->create([
@@ -170,6 +179,11 @@ class AttendanceController extends Controller
 
         // 休憩修正申請を作成
         foreach ($request->input('breaks', []) as $break) {
+
+            if (!isset($break['id'])) {
+                continue; // IDがない場合はスキップ
+            }
+
             $correction->breakCorrections()->create([
                 'break_id' => $break['id'], // 既存の休憩ID
                 'attendance_correction_id' => $correction->id,

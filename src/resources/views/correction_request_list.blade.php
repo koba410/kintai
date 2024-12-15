@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2 class="text-left mt-5 mb-5">| 申請一覧</h1>
+        <h2 class="text-left mt-5 mb-5">| 申請一覧</h2>
 
             <!-- タブ切り替え -->
             <ul class="nav nav-tabs">
@@ -73,7 +73,7 @@
                                     <td>{{ $request->reason }}</td>
                                     <td>{{ \Carbon\Carbon::parse($request->updated_at)->format('Y/m/d') }}</td>
                                     <td>
-                                        <a href="{{ route('attendance.detail', $request->id) }}"
+                                        <a href="{{ route('attendance.detail', $request->attendance->id) }}"
                                             class="btn btn-primary btn-sm">詳細</a>
                                     </td>
                                 </tr>

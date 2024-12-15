@@ -9,6 +9,9 @@ use App\Http\Controllers\RequestController;
 
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminRequestController;
+
 
 
 
@@ -46,11 +49,9 @@ Route::middleware(['role:staff'])->middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'showForm'])->name('attendance.show');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('requests.index');
-});
-Route::middleware(['role:staff,role:admin'])->middleware('auth')->group(function () {
     Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail'])->name('attendance.detail');
     Route::post('/attendance/{id}', [AttendanceController::class, 'correction'])->name('attendance.correction');
+    Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])->name('request.index');
 });
 
 // 管理者
@@ -60,4 +61,12 @@ Route::get('/admin/logout', [AdminAuthController::class, 'destroy'])->name('admi
 
 Route::middleware(['role:admin'])->middleware('auth')->group(function () {
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.staffAttendance.list');
+    Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'showDetail'])->name('admin.attendance.detail');
+    Route::post('/admin/attendance/{id}', [AdminAttendanceController::class, 'correction'])->name('admin.attendance.correction');
+    Route::get('/admin/staff/list',[AdminStaffController::class, 'index'])->name('admin.staff.list');
+    Route::get('/admin/attendance/staff/{id}',[AdminAttendanceController::class, 'showStaffAttendance'])->name('admin.show.staff.attendance');
+    Route::get('/admin/attendance/staff/{id}/csv',[AdminAttendanceController::class, 'exportCsv'])->name('admin.exportCsv');
+    Route::get('/admin/stamp_correction_request/list', [AdminRequestController::class, 'index'])->name('admin.requests.index');
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request}', [AdminRequestController::class, 'approveForm'])->name('admin.approve.form');
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request}', [AdminRequestController::class, 'approve'])->name('admin.approve');
 });
