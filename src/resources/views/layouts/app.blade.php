@@ -7,122 +7,61 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>勤怠管理</title>
 
-    {{-- Bootstrap CSS --}}
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    {{-- カスタム CSS --}}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- jQueryは不要 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 
 <body>
     <header class="auth-header w-auto" style="background-color: black;">
         <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container d-flex justify-content-between align-items-center">
-                <!-- ロゴ (レスポンシブ対応で中央揃え) -->
-                <a class="navbar-brand mx-lg-0 mx-auto" href="{{-- {{ route('item.list') }} --}}">
-                    <img class="CoachTech_White" src="{{ asset('svg/logo.svg') }}" alt="SVG Image">
+            <div class="container">
+                <!-- ロゴ -->
+                <a class="navbar-brand" href="#">
+                    <img src="{{ asset('svg/logo.svg') }}" alt="Logo" class="CoachTech_White">
                 </a>
 
-                @auth
-                    <!-- トグルボタン (小さい画面用) -->
-                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                <!-- トグルボタン -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    @if (auth()->user()->hasRole('staff'))
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <!-- モバイル用ナビゲーションリンク -->
-                            <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
-                                <!-- 各アイテムに余白を追加 -->
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
+                <!-- ナビゲーション -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    @auth
+                        <ul class="navbar-nav ms-auto d-flex flex-row">
+                            @if (auth()->user()->hasRole('staff'))
+                                <li class="nav-item"><a class="nav-link me-3" href="{{ route('attendance.show') }}">勤怠</a>
                                 </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
+                                <li class="nav-item"><a class="nav-link me-3"
+                                        href="{{ route('attendance.index') }}">勤怠一覧</a>
                                 </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('request.index') }}">申請</a>
+                                <li class="nav-item"><a class="nav-link me-3" href="{{ route('request.index') }}">申請</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
+                                <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">ログアウト</a></li>
+                            @elseif (auth()->user()->hasRole('admin'))
+                                <li class="nav-item"><a class="nav-link me-3"
+                                        href="{{ route('admin.staffAttendance.list') }}">勤怠一覧</a></li>
+                                <li class="nav-item"><a class="nav-link me-3"
+                                        href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
                                 </li>
-                            </ul>
-
-                            <!-- デスクトップ用ナビゲーションリンク -->
-                            <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('attendance.show') }}">勤怠</a>
+                                <li class="nav-item"><a class="nav-link me-3"
+                                        href="{{ route('admin.requests.index') }}">申請一覧</a>
                                 </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('attendance.index') }}">勤怠一覧</a>
-                                </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('request.index') }}">申請</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
-                                </li>
-                            </ul>
-                        </div>
-                    @elseif (auth()->user()->hasRole('admin'))
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <!-- モバイル用ナビゲーションリンク -->
-                            <ul class="navbar-nav ms-auto d-lg-none flex-row mt-3">
-                                <!-- 各アイテムに余白を追加 -->
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.staffAttendance.list') }}">勤怠一覧</a>
-                                </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
-                                </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.requests.index') }}">申請一覧</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
-                                </li>
-                                </li>
-                            </ul>
-
-                            <!-- デスクトップ用ナビゲーションリンク -->
-                            <ul class="navbar-nav ms-auto d-none d-lg-flex flex-row align-items-center">
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.staffAttendance.list') }}">勤怠一覧</a>
-                                </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
-                                </li>
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" href="{{ route('admin.requests.index') }}">申請一覧</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a>
-                                </li>
-                            </ul>
-                        </div>
-                    @endif
-                @endauth
+                                <li class="nav-item"><a class="nav-link" href="{{ route('admin.logout') }}">ログアウト</a></li>
+                            @endif
+                        </ul>
+                    @endauth
+                </div>
             </div>
         </nav>
     </header>
 
-    <!-- Bootstrap JavaScript (Popper.jsも含む) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- toggleDrawer 関数の定義 -->
-    <script>
-        function toggleDrawer() {
-            const searchDrawer = new bootstrap.Offcanvas(document.getElementById('searchDrawer'));
-            searchDrawer.toggle();
-        }
-    </script>
 
     <main>
         @yield('content')
