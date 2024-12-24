@@ -17,8 +17,8 @@ class CorrectionRequest extends FormRequest
 
         // 休憩データのバリデーション
         foreach ($this->input('breaks', []) as $index => $break) {
-            $rules["breaks.{$index}.start_time"] = 'required|date_format:H:i|before:breaks.' . $index . '.end_time|after_or_equal:check_in';
-            $rules["breaks.{$index}.end_time"] = 'required|date_format:H:i|after:breaks.' . $index . '.start_time|before_or_equal:check_out';
+            $rules["breaks.{$index}.start_time"] = 'required|date_format:H:i|before:breaks.' . $index . '.end_time|after_or_equal:check_in|before_or_equal:check_out';
+            $rules["breaks.{$index}.end_time"] = 'required|date_format:H:i|after:breaks.' . $index . '.start_time|before_or_equal:check_out|after_or_equal:check_in';
         }
 
         return $rules;
@@ -32,8 +32,10 @@ class CorrectionRequest extends FormRequest
             'breaks.*.start_time.before' => '休憩開始時間は休憩終了時間より前である必要があります。',
             'breaks.*.end_time.after' => '休憩終了時間は休憩開始時間より後である必要があります。',
             'breaks.*.start_time.after_or_equal' => '休憩時間が勤務時間外です。',
+            'breaks.*.start_time.before_or_equal' => '休憩時間が勤務時間外です。',
             'breaks.*.end_time.before_or_equal' => '休憩時間が勤務時間外です。',
-            'note.required' => '備考を記入してください',
+            'breaks.*.end_time.after_or_equal' => '休憩時間が勤務時間外です。',
+            'note.required' => '備考を記入してください。',
         ];
     }
 }
