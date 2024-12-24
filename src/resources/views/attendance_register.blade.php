@@ -24,7 +24,7 @@
                 <button class="btn btn-primary btn-lg" id="start-work" data-action="start_work">出勤</button>
             @elseif ($status === '出勤中')
                 <button class="btn btn-warning btn-lg mr-3" id="start-break" data-action="start_break"
-                    style="margin-right: 50px;">休憩</button>
+                    style="margin-right: 50px;">休憩入</button>
                 <button class="btn btn-danger btn-lg" id="end-work" data-action="end_work">退勤</button>
             @elseif ($status === '休憩中')
                 <button class="btn btn-success btn-lg" id="end-break" data-action="end_break">休憩戻</button>

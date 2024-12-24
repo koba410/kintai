@@ -1,0 +1,12 @@
+/** @test */
+public function it_shows_validation_message_when_passwords_do_not_match()
+{
+    $response = $this->post('/register', [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password123',
+        'password_confirmation' => 'different_password',
+    ]);
+
+    $response->assertSessionHasErrors(['password']);
+} 
