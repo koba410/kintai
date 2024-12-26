@@ -40,7 +40,7 @@
 ## 環境構築
 
 ### Dockerビルド
-1. `git clone git@github.com:koba410/FreeMarket.git`
+1. `git clone git@github.com:koba410/kintai.git`
 2. `cd kintai`
 3. `docker-compose up -d --build`
 
