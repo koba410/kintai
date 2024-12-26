@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Http\Requests\LoginRequest;
+
+class LoginController extends Controller
+{
+    // ログイン画面の表示
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+
+    // ログイン機能
+    public function login(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            /** @var User $user */
+            $user = Auth::user();
+
+            // メール認証チェック
+            if (!$user->hasVerifiedEmail()) {
+                Auth::logout();
+                return redirect()->route('login')->with('status', 'メール認証を完了してください。');
+            }
+
+            // ロールチェック
+            if ($user->hasRole('staff')) {
+                return redirect()->route('attendance.show'); // スタッフダッシュボード
+            }
+
+            // 不正なロール
+            Auth::logout();
+            return redirect()->route('login')->with('status', 'スタッフ専用のアカウントでログインしてください。');
+        }
+
+        // 認証失敗
+        return redirect()->route('login')->with('status', 'ログイン情報が正しくありません。');
+    }
+
+
+    public function destroy(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // ログアウト後に/loginにリダイレクト
+        return redirect('/login');
+    }
+}
