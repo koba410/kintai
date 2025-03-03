@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <!-- ロゴ -->
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ route('attendance.show') }}">
                     <img src="{{ asset('svg/logo.svg') }}" alt="Logo" class="CoachTech_White">
                 </a>
 
